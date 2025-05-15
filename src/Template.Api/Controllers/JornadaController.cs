@@ -21,5 +21,15 @@ namespace Template.Api.Controllers
             var jornadas = await _jornadaService.ObterJornadas();
             return Ok(jornadas);
         }
+
+        [HttpGet("filtro")]
+        public async Task<IActionResult> GetPorFiltro([FromQuery] string tpJornada, [FromQuery] string idRecorrencia)
+        {
+            var jornada = await _jornadaService.ObterJornadaPorFiltro(tpJornada, idRecorrencia);
+            if (jornada == null)
+                return NotFound();
+
+            return Ok(jornada);
+        }
     }
 }

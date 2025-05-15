@@ -25,8 +25,36 @@ namespace Template.Application.Services
                 TpJornada = j.TpJornada,
                 IdRecorrencia = j.IdRecorrencia,
                 IdE2E = j.IdE2E,
-                IdConciliacaoRecebedor = j.IdConciliacaoRecebedor
+                IdConciliacaoRecebedor = j.IdConciliacaoRecebedor,
+                SituacaoJornada = j.SituacaoJornada,
+                DtAgendamento = j.DtAgendamento,
+                VlAgendamento = j.VlAgendamento,
+                DtPagamento = j.DtPagamento,
+                DataHoraCriacao = j.DataHoraCriacao,
+                DataUltimaAtualizacao = j.DataUltimaAtualizacao
             });
+        }
+
+        public async Task<JornadaDto> ObterJornadaPorFiltro(string tpJornada, string idRecorrencia)
+        {
+            var jornada = await _jornadaRepository.GetByTpJornadaAndIdRecorrenciaAsync(tpJornada, idRecorrencia);
+
+            if (jornada == null)
+                return null;
+
+            return new JornadaDto
+            {
+                TpJornada = jornada.TpJornada,
+                IdRecorrencia = jornada.IdRecorrencia,
+                IdE2E = jornada.IdE2E,
+                IdConciliacaoRecebedor = jornada.IdConciliacaoRecebedor,
+                SituacaoJornada = jornada.SituacaoJornada,
+                DtAgendamento = jornada.DtAgendamento,
+                VlAgendamento = jornada.VlAgendamento,
+                DtPagamento = jornada.DtPagamento,
+                DataHoraCriacao = jornada.DataHoraCriacao,
+                DataUltimaAtualizacao = jornada.DataUltimaAtualizacao
+            };
         }
     }
 }
