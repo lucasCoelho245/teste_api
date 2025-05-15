@@ -1,9 +1,7 @@
-﻿using Template.Application.Dtos;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Template.Domain.Entidades;
 using Template.Domain.Repositorios;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Template.Application.Services
 {
@@ -16,45 +14,14 @@ namespace Template.Application.Services
             _jornadaRepository = jornadaRepository;
         }
 
-        public async Task<IEnumerable<JornadaDto>> ObterJornadas()
+        public Task<IEnumerable<Jornada>> ObterJornadas()
         {
-            var jornadas = await _jornadaRepository.GetAllAsync();
-
-            return jornadas.Select(j => new JornadaDto
-            {
-                TpJornada = j.TpJornada,
-                IdRecorrencia = j.IdRecorrencia,
-                IdE2E = j.IdE2E,
-                IdConciliacaoRecebedor = j.IdConciliacaoRecebedor,
-                SituacaoJornada = j.SituacaoJornada,
-                DtAgendamento = j.DtAgendamento,
-                VlAgendamento = j.VlAgendamento,
-                DtPagamento = j.DtPagamento,
-                DataHoraCriacao = j.DataHoraCriacao,
-                DataUltimaAtualizacao = j.DataUltimaAtualizacao
-            });
+            return _jornadaRepository.GetAllAsync();
         }
 
-        public async Task<JornadaDto> ObterJornadaPorFiltro(string tpJornada, string idRecorrencia)
+        public Task<Jornada> ObterJornadaPorFiltro(string tpJornada, string idRecorrencia)
         {
-            var jornada = await _jornadaRepository.GetByTpJornadaAndIdRecorrenciaAsync(tpJornada, idRecorrencia);
-
-            if (jornada == null)
-                return null;
-
-            return new JornadaDto
-            {
-                TpJornada = jornada.TpJornada,
-                IdRecorrencia = jornada.IdRecorrencia,
-                IdE2E = jornada.IdE2E,
-                IdConciliacaoRecebedor = jornada.IdConciliacaoRecebedor,
-                SituacaoJornada = jornada.SituacaoJornada,
-                DtAgendamento = jornada.DtAgendamento,
-                VlAgendamento = jornada.VlAgendamento,
-                DtPagamento = jornada.DtPagamento,
-                DataHoraCriacao = jornada.DataHoraCriacao,
-                DataUltimaAtualizacao = jornada.DataUltimaAtualizacao
-            };
+            return _jornadaRepository.GetByTpJornadaAndIdRecorrenciaAsync(tpJornada, idRecorrencia);
         }
     }
 }

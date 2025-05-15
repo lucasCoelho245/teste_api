@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Template.Application.Services;
 using System.Threading.Tasks;
+using Template.Application.Services;
+using Template.Domain.Entidades;
 
 namespace Template.Api.Controllers
 {

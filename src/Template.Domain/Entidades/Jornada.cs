@@ -1,4 +1,6 @@
-﻿namespace Template.Domain.Entidades
+﻿using System;
+
+namespace Template.Domain.Entidades
 {
     public class Jornada
     {
@@ -7,5 +9,12 @@
         public string IdRecorrencia { get; set; }        
         public string IdE2E { get; set; }                   
         public string IdConciliacaoRecebedor { get; set; }  
+
+        public string SituacaoJornada { get; set; }
+        public DateTime? DtAgendamento { get; set; }
+        public decimal? VlAgendamento { get; set; }
+        public DateTime? DtPagamento { get; set; }
+        public DateTime? DataHoraCriacao { get; set; }
+        public DateTime? DataUltimaAtualizacao { get; set; }
     }
 }

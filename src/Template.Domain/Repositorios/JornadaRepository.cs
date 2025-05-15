@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 using Template.Domain.Entidades;
+
 namespace Template.Domain.Repositorios
 {
     public class JornadaRepository : IJornadaRepository
     {
-        private readonly List<JornadaDT> _jornadasMock = new()
+        private readonly List<Jornada> _jornadasMock = new()
         {
             new Jornada
             {
+                Id = 1,
                 TpJornada = "Jornada 1",
                 IdRecorrencia = "Rec123",
                 IdE2E = "E2E456",
@@ -24,6 +26,7 @@ namespace Template.Domain.Repositorios
             },
             new Jornada
             {
+                Id = 2,
                 TpJornada = "Jornada 2",
                 IdRecorrencia = "Rec234",
                 IdE2E = "E2E567",
@@ -44,7 +47,7 @@ namespace Template.Domain.Repositorios
 
         public Task<Jornada> GetByTpJornadaAndIdRecorrenciaAsync(string tpJornada, string idRecorrencia)
         {
-            var resultado = _jornadasMock.FirstOrDefault(j => 
+            var resultado = _jornadasMock.FirstOrDefault(j =>
                 j.TpJornada == tpJornada && j.IdRecorrencia == idRecorrencia);
 
             return Task.FromResult(resultado);
