@@ -3,18 +3,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Template.Domain.Entidades;
 
-namespace Template.Domain.Repositorios;
-
-public class JornadaRepository : IJornadaRepository
+namespace Template.Domain.Repositorios
 {
-    public Task<IEnumerable<Jornada>> GetAllAsync()
+    public class JornadaRepository : IJornadaRepository
     {
-        var jornadas = new List<Jornada>
+        public Task<IEnumerable<Jornada>> GetAllAsync()
         {
-            new Jornada { Id = 1, Nome = "Jornada 1", DataInicio = DateTime.Now.AddDays(-1), DataFim = DateTime.Now },
-            new Jornada { Id = 2, Nome = "Jornada 2", DataInicio = DateTime.Now.AddDays(-2), DataFim = DateTime.Now.AddDays(-1) }
-        };
+            var jornadas = new List<Jornada>
+            {
+                new Jornada 
+                { 
+                    TpJornada = "Tipo 1",
+                    IdRecorrencia = "Rec123",
+                    IdE2E = "E2E456",
+                    IdConciliacaoRecebedor = "Conc789"
+                },
+                new Jornada 
+                { 
+                    TpJornada = "Tipo 2",
+                    IdRecorrencia = "Rec234",
+                    IdE2E = "E2E567",
+                    IdConciliacaoRecebedor = "Conc890"
+                }
+            };
 
-        return Task.FromResult<IEnumerable<Jornada>>(jornadas);
+            return Task.FromResult<IEnumerable<Jornada>>(jornadas);
+        }
     }
 }

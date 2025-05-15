@@ -17,6 +17,8 @@ using Template.CrossCutting.InjecaoDependencia;
 using Http.ResilientClient;
 using Http.ResilientClient.Extensions;
 using Http.ResilientClient.Options;
+using Template.Application.Services;
+using Template.Domain.Repositorios;
 
 namespace Template.Api
 {
@@ -30,7 +32,6 @@ namespace Template.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddHttpClient();
             services.AddControllers();
             services.AddLogger(Configuration);
@@ -41,6 +42,8 @@ namespace Template.Api
             services.AddHealthChecksInjection();
             services.AddScoped<HttpIntercepter>();
             services.AddHttpContextAccessor();
+            services.AddTransient<IJornadaRepository, JornadaRepository>();
+            services.AddScoped<JornadaService>();
             services.ConfigureAll<HttpClientFactoryOptions>(options =>
             {
                 options.HttpMessageHandlerBuilderActions.Add(builder =>

@@ -1,0 +1,14 @@
+﻿[
+{
+    "tpJornada": "Tipo 1",
+    "idRecorrencia": "Rec123",
+    "idE2E": "E2E456",
+    "idConciliacaoRecebedor": "Conc789"
+},
+{
+    "tpJornada": "Tipo 2",
+    "idRecorrencia": "Rec234",
+    "idE2E": "E2E567",
+    "idConciliacaoRecebedor": "Conc890"
+}
+]
