@@ -55,17 +55,17 @@ namespace Template.Api
                     Version = "v1",
                     Title = "API Template",
                     Description = "An ASP.NET Core Web API for managing ToDo items",
-                    TermsOfService = new Uri(Configuration["Swagger:TermsOfServiceUrl"]),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = new Uri(Configuration["Swagger:ContactUrl"])
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Example License",
-                        Url = new Uri(Configuration["Swagger:LicenseUrl"])
-                    }
+                    // TermsOfService = new Uri(Configuration["Swagger:TermsOfServiceUrl"]),
+                    // Contact = new OpenApiContact
+                    // {
+                    //     Name = "Example Contact",
+                    //     Url = new Uri(Configuration["Swagger:ContactUrl"])
+                    // },
+                    // License = new OpenApiLicense
+                    // {
+                    //     Name = "Example License",
+                    //     Url = new Uri(Configuration["Swagger:LicenseUrl"])
+                    // }
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -107,7 +107,7 @@ namespace Template.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseJWTManager();
+            // app.UseJWTManager();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
