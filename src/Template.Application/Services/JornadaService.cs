@@ -23,5 +23,10 @@ namespace Template.Application.Services
         {
             return _jornadaRepository.GetByTpJornadaAndIdRecorrenciaAsync(tpJornada, idRecorrencia);
         }
+
+        public Task<IEnumerable<Jornada>> ObterJornadasPorFiltros(string tpJornada = null, string idRecorrencia = null, string idE2E = null, string idConciliacaoRecebedor = null)
+        {
+            return _jornadaRepository.GetByFiltersAsync(tpJornada, idRecorrencia, idE2E, idConciliacaoRecebedor);
+        }
     }
 }
