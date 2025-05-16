@@ -19,6 +19,7 @@ using Http.ResilientClient.Extensions;
 using Http.ResilientClient.Options;
 using Template.Application.Services;
 using Template.Domain.Repositorios;
+using Template.Infra.Repositorios;
 
 namespace Template.Api
 {

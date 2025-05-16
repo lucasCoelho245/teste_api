@@ -1,96 +1,65 @@
-﻿using System;
+﻿using Dapper;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Threading.Tasks;
 using Template.Domain.Entidades;
+using Template.Domain.Repositorios;
 
-namespace Template.Domain.Repositorios;
-
-public class JornadaRepository : IJornadaRepository
+namespace Template.Infra.Repositorios
 {
-    private readonly List<Jornada> _jornadasMock = new()
+    public class JornadaRepository : IJornadaRepository
     {
-        new Jornada
+        private readonly IDbConnection _connection;
+
+        public JornadaRepository(IDbConnection connection)
         {
-            Id = 1,
-            TpJornada = "Jornada 1",
-            IdRecorrencia = "Rec123",
-            IdE2E = "E2E456",
-            IdConciliacaoRecebedor = "Conc789",
-            SituacaoJornada = "Ativa",
-            DtAgendamento = DateTime.Now.AddDays(-2),
-            VlAgendamento = 100.50m,
-            DtPagamento = DateTime.Now.AddDays(-1),
-            DataHoraCriacao = DateTime.Now.AddDays(-10),
-            DataUltimaAtualizacao = DateTime.Now
-        },
-        new Jornada
-        {
-            Id = 2,
-            TpJornada = "Jornada 2",
-            IdRecorrencia = "Rec234",
-            IdE2E = "E2E567",
-            IdConciliacaoRecebedor = "Conc890",
-            SituacaoJornada = "Pendente",
-            DtAgendamento = DateTime.Now.AddDays(-3),
-            VlAgendamento = 200.75m,
-            DtPagamento = DateTime.Now.AddDays(-2),
-            DataHoraCriacao = DateTime.Now.AddDays(-12),
-            DataUltimaAtualizacao = DateTime.Now
+            _connection = connection;
         }
-    };
 
-    public Task<IEnumerable<Jornada>> GetAllAsync()
-    {
-        return Task.FromResult(_jornadasMock.AsEnumerable());
-    }
+        public async Task<IEnumerable<Jornada>> GetAllAsync()
+        {
+            var sql = "SELECT * FROM Jornadas";
+            return await _connection.QueryAsync<Jornada>(sql);
+        }
 
-    public Task<Jornada> GetByTpJornadaAndIdRecorrenciaAsync(string tpJornada, string idRecorrencia)
-    {
-        var resultado = _jornadasMock.FirstOrDefault(j => 
-            j.TpJornada.Equals(tpJornada, StringComparison.OrdinalIgnoreCase) && 
-            j.IdRecorrencia.Equals(idRecorrencia, StringComparison.OrdinalIgnoreCase));
+        public async Task<Jornada> GetByTpJornadaAndIdRecorrenciaAsync(string tpJornada, string idRecorrencia)
+        {
+            var sql = @"
+                SELECT * FROM Jornadas 
+                WHERE TpJornada = @TpJornada 
+                  AND IdRecorrencia = @IdRecorrencia
+                  AND TpJornada IN ('Jornada 1', 'Jornada 2', 'Jornada 3', 'Jornada 4')
+            ";
+            return await _connection.QueryFirstOrDefaultAsync<Jornada>(sql, new { TpJornada = tpJornada, IdRecorrencia = idRecorrencia });
+        }
 
-        return Task.FromResult(resultado);
-    }
+        public async Task<Jornada> GetByTpJornadaAndIdE2EAsync(string tpJornada, string idE2E)
+        {
+            var sql = @"
+                SELECT * FROM Jornadas
+                WHERE TpJornada IN ('AGND', 'NTAG', 'RIFL')
+                  AND TpJornada = @TpJornada
+                  AND IdE2E = @IdE2E
+            ";
+            return await _connection.QueryFirstOrDefaultAsync<Jornada>(sql, new { TpJornada = tpJornada, IdE2E = idE2E });
+        }
 
-    public Task<IEnumerable<Jornada>> GetByFiltersAsync(string tpJornada = null, string idRecorrencia = null, string idE2E = null, string idConciliacaoRecebedor = null)
-    {
-        var query = _jornadasMock.AsQueryable();
-
-        query = FilterByTpJornada(query, tpJornada);
-        query = FilterByIdRecorrencia(query, idRecorrencia);
-        query = FilterByIdE2E(query, idE2E);
-        query = FilterByIdConciliacaoRecebedor(query, idConciliacaoRecebedor);
-
-        return Task.FromResult(query.AsEnumerable());
-    }
-
-    private IQueryable<Jornada> FilterByTpJornada(IQueryable<Jornada> query, string tpJornada)
-    {
-        if (string.IsNullOrWhiteSpace(tpJornada))
-            return query;
-        return query.Where(j => j.TpJornada.Equals(tpJornada, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private IQueryable<Jornada> FilterByIdRecorrencia(IQueryable<Jornada> query, string idRecorrencia)
-    {
-        if (string.IsNullOrWhiteSpace(idRecorrencia))
-            return query;
-        return query.Where(j => j.IdRecorrencia.Equals(idRecorrencia, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private IQueryable<Jornada> FilterByIdE2E(IQueryable<Jornada> query, string idE2E)
-    {
-        if (string.IsNullOrWhiteSpace(idE2E))
-            return query;
-        return query.Where(j => j.IdE2E.Equals(idE2E, StringComparison.OrdinalIgnoreCase));
-    }
-
-    private IQueryable<Jornada> FilterByIdConciliacaoRecebedor(IQueryable<Jornada> query, string idConciliacaoRecebedor)
-    {
-        if (string.IsNullOrWhiteSpace(idConciliacaoRecebedor))
-            return query;
-        return query.Where(j => j.IdConciliacaoRecebedor.Equals(idConciliacaoRecebedor, StringComparison.OrdinalIgnoreCase));
+        public async Task<IEnumerable<Jornada>> GetByFiltersAsync(string tpJornada = null, string idRecorrencia = null, string idE2E = null, string idConciliacaoRecebedor = null)
+        {
+            var sql = @"
+                SELECT * FROM Jornadas
+                WHERE (@TpJornada IS NULL OR TpJornada = @TpJornada)
+                  AND (@IdRecorrencia IS NULL OR IdRecorrencia = @IdRecorrencia)
+                  AND (@IdE2E IS NULL OR IdE2E = @IdE2E)
+                  AND (@IdConciliacaoRecebedor IS NULL OR IdConciliacaoRecebedor = @IdConciliacaoRecebedor)
+            ";
+            return await _connection.QueryAsync<Jornada>(sql, new
+            {
+                TpJornada = tpJornada,
+                IdRecorrencia = idRecorrencia,
+                IdE2E = idE2E,
+                IdConciliacaoRecebedor = idConciliacaoRecebedor
+            });
+        }
     }
 }

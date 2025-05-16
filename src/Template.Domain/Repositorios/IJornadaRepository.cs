@@ -10,10 +10,8 @@ namespace Template.Domain.Repositorios
 
         Task<Jornada> GetByTpJornadaAndIdRecorrenciaAsync(string tpJornada, string idRecorrencia);
 
-        Task<IEnumerable<Jornada>> GetByFiltersAsync(
-            string tpJornada = null, 
-            string idRecorrencia = null, 
-            string idE2E = null, 
-            string idConciliacaoRecebedor = null);
+        Task<Jornada> GetByTpJornadaAndIdE2EAsync(string tpJornada, string idE2E);
+
+        Task<IEnumerable<Jornada>> GetByFiltersAsync(string tpJornada = null, string idRecorrencia = null, string idE2E = null, string idConciliacaoRecebedor = null);
     }
 }
