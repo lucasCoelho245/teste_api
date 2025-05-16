@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Template.Application.Services;
-using Template.Domain.Entidades;
 
 namespace Template.Api.Controllers
 {
@@ -31,6 +30,16 @@ namespace Template.Api.Controllers
                 return NotFound();
 
             return Ok(jornada);
+        }
+
+        [HttpGet("filtros")]
+        public async Task<IActionResult> GetPorFiltros([FromQuery] string tpJornada = null,
+            [FromQuery] string idRecorrencia = null,
+            [FromQuery] string idE2E = null,
+            [FromQuery] string idConciliacaoRecebedor = null)
+        {
+            var jornadas = await _jornadaService.ObterJornadasPorFiltros(tpJornada, idRecorrencia, idE2E, idConciliacaoRecebedor);
+            return Ok(jornadas);
         }
     }
 }
